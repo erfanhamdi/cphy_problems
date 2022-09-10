@@ -1,0 +1,11 @@
+## Cellular Automata Problem
+
+|        Initial State   | Final State |  Avalanche activity in most recent timesteps  |
+|:----------:|:-------------:|:-------------: |
+|![](/cphy_problems/cellular_automata/figs/frame0000.png)|![](/cphy_problems/cellular_automata/figs/frame0498.png)| ![](/cphy_problems/cellular_automata/figs/Figure_3.png)
+
+## Let it Topple!
+Here is a gif made from each step of avalanche.
+|        Avalanche! |
+|:----------: |
+![](/cphy_problems/cellular_automata/figs/avalanche_gif.gif)
