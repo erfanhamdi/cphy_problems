@@ -8,4 +8,4 @@
 Here is a gif made from each step of avalanche.
 |        Avalanche! |
 |:----------: |
-![](/cellular_automata/figs/avalanche_gif.gif)
+![](/cellular_automata/figs/sandpile_copper.gif)

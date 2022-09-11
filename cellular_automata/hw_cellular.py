@@ -123,7 +123,7 @@ if __name__ == "__main__":
     all_diffs = all_diffs[np.sum(all_diffs, axis=(1, 2)) > 1] # Filter to only keep big events
     most_recent_events = np.sum(all_diffs[-100:], axis=0)
     plt.figure(figsize=(5, 5))
-    plt.imshow(most_recent_events)
+    plt.imshow(most_recent_events, cmap='copper')
     plt.title("Avalanch activity in most recent timesteps")
 
     all_diffs = np.abs(np.diff(np.array(model.history), axis=0))
@@ -135,6 +135,7 @@ if __name__ == "__main__":
 
     plt.figure(figsize=(5, 5))
     plt.imshow(activity_sliding[-1])
+    plt.title("Cumulative activity in most recent timesteps")
     activity_sliding2 = activity_sliding[-500:]
     vmin = np.percentile(activity_sliding2, 1)
     # vmin = 0
