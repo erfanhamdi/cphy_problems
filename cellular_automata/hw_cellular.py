@@ -134,7 +134,7 @@ if __name__ == "__main__":
     activity_sliding = activity_cumulative[50:] - activity_cumulative[:-50]
 
     plt.figure(figsize=(5, 5))
-    plt.imshow(activity_sliding[-1])
+    plt.imshow(activity_sliding[-1], cmap='copper')
     plt.title("Cumulative activity in most recent timesteps")
     activity_sliding2 = activity_sliding[-500:]
     vmin = np.percentile(activity_sliding2, 1)
