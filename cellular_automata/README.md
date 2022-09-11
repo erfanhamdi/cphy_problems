@@ -12,7 +12,7 @@ Here is a gif made from each step of avalanche.
 
 ## Runtime Comparison
 I compared my version of implementation with the recursive solution that was presented and here are the results:
-|       Method | Runtime | 
+|       Method | Runtime (s) | 
 |:----------: | :----------: |
 | Vectorized | 31.854 |
 | Recursive | 9.28 |
