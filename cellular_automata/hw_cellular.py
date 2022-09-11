@@ -48,7 +48,7 @@ class AbelianSandpile:
             final_mask = row_mask + col_mask
             final_mask[mask_history] = 0
             self.grid += final_mask
-            self.grid[mask_history] = 0
+            self.grid[mask_history] -= 4
             duration += 1
         self.all_durations.append(duration)
 
