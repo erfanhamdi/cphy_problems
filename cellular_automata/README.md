@@ -9,3 +9,10 @@ Here is a gif made from each step of avalanche.
 |        Avalanche! |
 |:----------: |
 ![](/cellular_automata/figs/sandpile_copper.gif)
+
+## Runtime Comparison
+I compared my version of implementation with the recursive solution that was presented and here are the results:
+|       Method | Runtime | 
+|:----------: | :----------: |
+| Vectorized | 31.854 |
+| Recursive | 9.28 |
