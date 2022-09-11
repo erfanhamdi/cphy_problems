@@ -1,8 +1,8 @@
 ## Cellular Automata Problem
 
-|        Initial State   | Final State |  Avalanche activity in most recent timesteps  |
-|:----------:|:-------------:|:-------------: |
-|![](/cellular_automata/figs/frame0000.png) |![](/cellular_automata/figs/frame0498.png)| ![](/cellular_automata/figs/Figure_3.png)
+|        Initial State   | Final State |  Avalanche activity in most recent timesteps  | Avalanche duration distribution |
+|:----------:|:-------------:|:-------------: |:-------------:|
+|![](/cellular_automata/figs/frame0000.png) |![](/cellular_automata/figs/frame0498.png)| ![](/cellular_automata/figs/Figure_3.png) | ![](/cellular_automata/figs/avalanche_duration_distribution.png) |
 
 ## Let it Topple!
 Here is a gif made from each step of avalanche.
