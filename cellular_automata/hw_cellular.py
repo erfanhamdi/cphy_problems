@@ -83,6 +83,7 @@ if __name__ == "__main__":
     # model.step()
     plt.figure()
     plt.imshow(model.grid, cmap='gray')
+    plt.title("Initial state")
 
     model.simulate(10000)
     plt.figure()
