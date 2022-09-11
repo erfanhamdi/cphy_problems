@@ -3,7 +3,12 @@
 |        Initial State   | Final State |  Avalanche activity in most recent timesteps  | Avalanche duration distribution |
 |:----------:|:-------------:|:-------------: |:-------------:|
 |![](/cellular_automata/figs/frame0000.png) |![](/cellular_automata/figs/frame0498.png)| ![](/cellular_automata/figs/Figure_3.png) | ![](/cellular_automata/figs/avalanche_duration_distribution.png) |
-
+## Frequency Calculation
+The 1/f can be calculated using slope of avalanche duration distribution. here alpha = 0.174 then
+```math
+\frac{1}{f} = f^{2-0.174} = f^1.826
+```
+![](/cellular_automata/figs/avalanche_duration_distribution.png)
 ## Let it Topple!
 Here is a gif made from each step of avalanche.
 |        Avalanche! |
