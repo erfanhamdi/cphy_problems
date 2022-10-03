@@ -93,7 +93,7 @@ class PercolationSimulation:
         ####### YOUR CODE HERE  ####### 
         # Hint: my solution is 3 lines of code in numpy
         np.random.seed(self.random_state)
-        self.grid = np.random.choice([0, 1], size=(self.n, self.n), p=[1-self.p, self.p])
+        self.grid = np.random.choice([1, 0], size=(self.n, self.n), p=[1-self.p, self.p])
         # self.grid = np.random.choice([0, 1], size=(4, 4), p=[1-self.p, self.p])
         self.grid = np.pad(self.grid, (1, 1), 'constant', constant_values = (0, 0))
         self.grid_filled = np.copy(self.grid)
@@ -138,7 +138,7 @@ class PercolationSimulation:
         #
         #
         ###############################################################################
-    def _flow(self):
+    def _flow(self, rs):
         """
         Run a percolation simulation using recursion
 
@@ -159,7 +159,7 @@ class PercolationSimulation:
         # two lattice indices as arguments
         self.grid_filled[0, :] = 2
         for i in range(self.grid_filled.shape[0]):
-            
+            out_path = "private_dump/percolation/frame" + str(rs*53+i).zfill(4) + ".png"
             open_cells = np.where(self.grid_filled[i]==1)[0]
             if len(open_cells) != 0:
                 for open_coords in open_cells:
@@ -168,13 +168,16 @@ class PercolationSimulation:
                 for invert_coords in open_cells[np.argsort(-open_cells)]:
                     if self._poll_neighbors(i, invert_coords):
                         self.grid_filled[i, invert_coords] += 1
-            
+            plt.figure()
+            plot_percolation(self.grid_filled)
+            plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0, dpi=160)
+            plt.close()
         ###############################################################################
         
 
 
 
-    def percolate(self):
+    def percolate(self, rs):
         """
         Initialize a random lattice and then run a percolation simulation. Report results
         """
@@ -184,11 +187,19 @@ class PercolationSimulation:
         # Hint: my solution is 3 lines of code, and it just calls other methods in the
         # class, which do the heavy lifting
         self._initialize_grid()
-        self._flow()
+        self._flow(rs)
         self.grid_filled = self.grid_filled[1:-1, 1:-1]
-        if any(self.grid_filled[-1, :]==2):
+        out_path = "private_dump/percolation/frame" + str((rs+1)*52).zfill(4) + ".png"
+        plt.figure()
+        if any(self.grid_filled[-1, :]>=2):
+            plot_percolation_end(self.grid_filled, True)
+            plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0, dpi=160)
+            plt.close()
             return True
         else:
+            plot_percolation_end(self.grid_filled, False)
+            plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0, dpi=160)
+            plt.close()
             return False
         ###############################################################################
 
@@ -209,73 +220,128 @@ def plot_percolation(mat):
     cmap = LinearSegmentedColormap.from_list("", tuples)
     plt.imshow(mat, cmap=cmap, vmin=0, vmax=2)
 
-rs = None
-model = PercolationSimulation(n=20, random_state=rs, p=0.1)
-print(model.percolate())
-plt.figure()
-plot_percolation(model.grid_filled)
+def plot_percolation_end(mat, status):
+    """
+    If percolated a it would turn the screen to green
+    """
+    cvals  = [0, 1, 2]
+    if status:
+        colors = [(0, 0, 0), (0.4, 0.4, 0.4), (0.0, 1, 0)]
+    else:
+        colors = [(0, 0, 0), (0.4, 0.4, 0.4), (1, 0, 0)]
 
-model = PercolationSimulation(n=20, random_state=rs, p=0.4)
-print(model.percolate())
-plt.figure()
-plot_percolation(model.grid_filled)
-
-model = PercolationSimulation(n=20, random_state=rs, p=0.6)
-print(model.percolate())
-plt.figure()
-plot_percolation(model.grid_filled)
-
-model = PercolationSimulation(n=20, random_state=rs, p=0.9)
-print(model.percolate())
-plt.figure()
-plot_percolation(model.grid_filled)
-plt.show()
+    norm = plt.Normalize(min(cvals), max(cvals))
+    tuples = list(zip(map(norm,cvals), colors))
+    cmap = LinearSegmentedColormap.from_list("", tuples)
+    plt.imshow(mat, cmap=cmap, vmin=0, vmax=2)
 
 
-# Import William's solution
-#from solutions.percolation import PercolationSimulation
+rs = 1234
+for rs in range(0, 1):
+    model = PercolationSimulation(n=20, random_state=rs, p=0.4)
+    print(model.percolate(rs))
+    plt.figure()
+    plot_percolation(model.grid_filled)
 
-pvals = np.linspace(0, 1, 25) # control parameter for percolation phase transition
-n_reps = 200 # number of times to repeat the simulation for each p value
+# model = PercolationSimulation(n=20, random_state=rs, p=0.4)
+# print(model.percolate())
+# plt.figure()
+# plot_percolation(model.grid_filled)
 
-all_percolations = list()
-for p in pvals:
-    print("Running replicate simulations for p = {}".format(p), flush=True)
-    all_replicates = list()
-    for i in range(n_reps):
-        # Initialize the model
-        model = PercolationSimulation(30, p=p)
-        all_replicates.append(model.percolate())
-    all_percolations.append(all_replicates)
+# model = PercolationSimulation(n=20, random_state=rs, p=0.6)
+# print(model.percolate())
+# plt.figure()
+# plot_percolation(model.grid_filled)
 
-plt.figure()
-plt.plot(pvals, np.mean(np.array(all_percolations), axis=1))
-plt.xlabel('Average site occupation probability')
-plt.ylabel('Percolation probability')
-
-plt.figure()
-plt.plot(pvals, np.std(np.array(all_percolations), axis=1))
-plt.xlabel('Standard deviation in site occupation probability')
-plt.ylabel('Percolation probability')
-
-plt.show()
+# model = PercolationSimulation(n=20, random_state=rs, p=0.9)
+# print(model.percolate())
+# plt.figure()
+# plot_percolation(model.grid_filled)
+# # plt.show()
 
 
-## Just from curiousity, plot the distribution of cluster sizes at the percolation threshold
-## why does it appear to be bimodal?
-all_cluster_sizes = list()
-p_c = 0.407259
-n_reps = 5000
-for i in range(n_reps):
-    model = PercolationSimulation(100, p=p_c)
-    model.percolate()
-    cluster_size = np.sum(model.grid_filled == 2)
-    all_cluster_sizes.append(cluster_size)
+# # Import William's solution
+# #from solutions.percolation import PercolationSimulation
 
-    if i % 500 == 0:
-        print("Finished simulation {}".format(i), flush=True)
+# pvals = np.linspace(0, 1, 25) # control parameter for percolation phase transition
+# n_reps = 200 # number of times to repeat the simulation for each p value
 
-all_cluster_sizes = np.array(all_cluster_sizes)
+# all_percolations = list()
+# for p in pvals:
+#     print("Running replicate simulations for p = {}".format(p), flush=True)
+#     all_replicates = list()
+#     for i in range(n_reps):
+#         # Initialize the model
+#         model = PercolationSimulation(30, p=p)
+#         all_replicates.append(model.percolate())
+#     all_percolations.append(all_replicates)
 
-plt.figure()
-plt.hist(all_cluster_sizes, 50)
+# plt.figure()
+# plt.plot(pvals, np.mean(np.array(all_percolations), axis=1))
+# plt.xlabel('Average site occupation probability')
+# plt.ylabel('Percolation probability')
+
+# plt.figure()
+# plt.plot(pvals, np.std(np.array(all_percolations), axis=1))
+# plt.xlabel('Standard deviation in site occupation probability')
+# plt.ylabel('Percolation probability')
+
+# plt.show()
+
+
+# # Just from curiousity, plot the distribution of cluster sizes at the percolation threshold
+# # why does it appear to be bimodal?
+# # all_cluster_sizes = list()
+# # p_c = 0.407259
+# # n_reps = 5000
+# # for i in range(n_reps):
+# #     model = PercolationSimulation(100, p=p_c)
+# #     model.percolate()
+# #     cluster_size = np.sum(model.grid_filled == 2)
+# #     all_cluster_sizes.append(cluster_size)
+
+# #     if i % 500 == 0:
+# #         print("Finished simulation {}".format(i), flush=True)
+
+# # all_cluster_sizes = np.array(all_cluster_sizes)
+
+# # plt.figure()
+# # plt.hist(all_cluster_sizes, 50)
+# # plt.show()
+
+# initial_lattice = np.zeros((50, 50))
+
+# # Decide the order in which sites become blocked
+# np.random.seed(0)
+# all_lattice_indices = np.array(
+#     [(i, j) for i in range(initial_lattice.shape[0]) for j in range(initial_lattice.shape[1])]
+# )
+# np.random.shuffle(all_lattice_indices)
+
+# # does percolate 
+# all_grids = list()
+# for inds in all_lattice_indices:
+    
+#     initial_lattice[inds[0], inds[1]] = 1
+#     model = PercolationSimulation(grid=initial_lattice)
+#     model.percolate()
+
+#     if (model.p > 0.3) and (model.p < 0.7):
+#         all_grids.append(np.copy(model.grid_filled))
+
+# for i in range(len(all_grids[::2]) - 1):
+    
+    
+#     out_path = "private_dump/percolation/frame" + str(i).zfill(4) + ".png"
+
+#     plt.figure()
+#     plot_percolation(all_grids[::2][i])
+
+#     ax = plt.gca()
+#     ax.set_axis_off()
+#     ax.xaxis.set_major_locator(plt.NullLocator())
+#     ax.yaxis.set_major_locator(plt.NullLocator())
+#     ax.set_aspect(1, adjustable='box')
+
+#     plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0, dpi=160)
+#     plt.close()
