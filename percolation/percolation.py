@@ -170,12 +170,12 @@ class PercolationSimulation:
                         self.grid_filled[i, invert_coords] += 1
             plt.figure()
             plot_percolation(self.grid_filled)
-            plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0, dpi=160)
+            plt.grid(False)
+            plt.axis('off')
+
+            plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0)
             plt.close()
         ###############################################################################
-        
-
-
 
     def percolate(self, rs):
         """
@@ -190,16 +190,23 @@ class PercolationSimulation:
         self._flow(rs)
         self.grid_filled = self.grid_filled[1:-1, 1:-1]
         out_path = "private_dump/percolation/frame" + str((rs+1)*52).zfill(4) + ".png"
-        plt.figure()
+        # plt.figure()
+        plt.grid(False)
+        plt.axis('off')
+
         if any(self.grid_filled[-1, :]>=2):
             plot_percolation_end(self.grid_filled, True)
-            plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0, dpi=160)
-            plt.close()
+            plt.grid(False)
+            plt.axis('off')
+            plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0)
+            plt.close('all')
             return True
         else:
             plot_percolation_end(self.grid_filled, False)
-            plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0, dpi=160)
-            plt.close()
+            plt.grid(False)
+            plt.axis('off')
+            plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0)
+            plt.close('all')
             return False
         ###############################################################################
 
@@ -219,6 +226,8 @@ def plot_percolation(mat):
     tuples = list(zip(map(norm,cvals), colors))
     cmap = LinearSegmentedColormap.from_list("", tuples)
     plt.imshow(mat, cmap=cmap, vmin=0, vmax=2)
+    plt.grid(False)
+    plt.axis('off')
 
 def plot_percolation_end(mat, status):
     """
@@ -234,13 +243,18 @@ def plot_percolation_end(mat, status):
     tuples = list(zip(map(norm,cvals), colors))
     cmap = LinearSegmentedColormap.from_list("", tuples)
     plt.imshow(mat, cmap=cmap, vmin=0, vmax=2)
+    plt.grid(False)
+    plt.axis('off')
 
 
 rs = 1234
-for rs in range(0, 1):
-    model = PercolationSimulation(n=20, random_state=rs, p=0.4)
+for rs in range(0, 10):
+    model = PercolationSimulation(n=50, random_state=rs, p=0.4)
     print(model.percolate(rs))
     plt.figure()
+    plt.grid(False)
+    plt.axis('off')
+
     plot_percolation(model.grid_filled)
 
 # model = PercolationSimulation(n=20, random_state=rs, p=0.4)
