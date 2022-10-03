@@ -3,8 +3,9 @@
 |        Initial State   | Final State |
 |:----------:|:-------------:|
 |![](/percolation/figs/frame0000.png) |![](/percolation/figs/frame0021.png)|
-## Let it Topple!
+
+## Let it Flow!
 Here is a gif made from different seeds of grid.
-|        Avalanche! |
+|        Flow! |
 |:----------: |
 ![](/percolation/figs/out_small.gif)
