@@ -7,4 +7,4 @@
 Here is a gif made from different seeds of grid.
 |        Avalanche! |
 |:----------: |
-![](/percolation/figs/out.gif)
+![](/percolation/figs/out_small.gif)
