@@ -1,38 +1,5 @@
 import numpy as np
 class PercolationSimulation:
-    """
-    A simulation of a 2D directed percolation problem. Given a 2D lattice, blocked sites
-    are denoted by 0s, and open sites are denoted by 1s. During a simulation, water is
-    poured into the top of the grid, and allowed to percolate to the bottom. If water
-    fills a lattice site, it is marked with a 2 in the grid. Water only reaches a site
-    if it reaches an open site directly above, or to the immediate left or right 
-    of an open site.
-
-    I've included the API for my solution below. You can use this as a starting point, 
-    or you can re-factor the code to your own style. Your final solution must have a 
-    method called percolate that creates a random lattice and runs a percolation 
-    simulation and
-    1. returns True if the system percolates
-    2. stores the original lattice in self.grid
-    3. stores the water filled lattice in self.grid_filled
-
-    + For simplicity, use the first dimension of the array as the percolation direction
-    + For boundary conditions, assume that any site out of bounds is a 0 (blocked)
-    + You should use numpy for this problem, although it is possible to use lists 
-
-
-
-    Attributes:
-        grid (np.array): the original lattice of blocked (0) and open (1) sites
-        grid_filled (np.array): the lattice after water has been poured in
-        n (int): number of rows and columns in the lattice
-        p (float): probability of a site being blocked in the randomly-sampled lattice
-            random_state (int): random seed for the random number generator
-        random_state (int): random seed for numpy's random number generator. Used to 
-            ensure reproducibility across random simulations. The default value of None
-            will use the current state of the random number generator without resetting
-            it.
-    """
 
     def __init__(self, n=100, p=0.5, grid=None, random_state=None):
         """
@@ -63,10 +30,6 @@ class PercolationSimulation:
             self.n = grid.shape[0]
             self.p = 1 - np.mean(grid)
 
-        # The filled grid used in the percolation calculation. Initialize to the original
-        # grid. We technically don't need to copy the original grid if we want to save
-        # memory, but it makes the code easier to debug if this is a separate variable 
-        # from self.grid.
         self.grid_filled = np.copy(self.grid)
 
     def _initialize_grid(self):
@@ -87,57 +50,19 @@ class PercolationSimulation:
         build software that accesses percolate(), and so we should not alter the 
         input/outputs because it's a public method
         """
-        ###############################################################################
-        #
-        #
-        ####### YOUR CODE HERE  ####### 
-        # Hint: my solution is 3 lines of code in numpy
         np.random.seed(self.random_state)
         self.grid = np.random.choice([1, 0], size=(self.n, self.n), p=[1-self.p, self.p])
-        # self.grid = np.random.choice([0, 1], size=(4, 4), p=[1-self.p, self.p])
         self.grid = np.pad(self.grid, (1, 1), 'constant', constant_values = (0, 0))
         self.grid_filled = np.copy(self.grid)
-        #
-        #
-        ###############################################################################
-
-    def _flow_recursive(self, i, j):
-        """
-        Only used if we opt for a recursive solution.
-
-        The recursive portion of the flow simulation. Notice how grid and grid_filled
-        are used to keep track of the global state, even as our recursive calls nest
-        deeper and deeper
-        """
-        
-        ####### YOUR CODE HERE  #######################################################
-        #
-        #
-        # Remember to check the von Neumann neighborhood of the current site. There should
-        # be 4 recursive calls in total, and 4 base cases
-        #
-        #
-        ###############################################################################s
-        raise NotImplementedError("Implement this method")
-
 
     def _poll_neighbors(self, i, j):
         """
         Check whether there is a filled site adjacent to a site at coordinates i, j in 
         self.grid_filled. Respects boundary conditions.
         """
-
-        ####### YOUR CODE HERE  #######################################################
-        #
-        #
-        # Hint: my solution is 4 lines of code in numpy, but you may get different 
-        # results depending on how you enforce the boundary conditions in your solution.
-        # Not needed for the recursive solution
         enforced_boundary_grid = self.grid_filled >= 2
         return any([enforced_boundary_grid[i-1, j], enforced_boundary_grid[i, j+1], enforced_boundary_grid[i, j-1]])
-        #
-        #
-        ###############################################################################
+
     def _flow(self, rs):
         """
         Run a percolation simulation using recursion
@@ -146,17 +71,6 @@ class PercolationSimulation:
         return anything. In other languages like Java or C, this method would return
         void
         """
-        ###############################################################################
-
-        ####### YOUR CODE HERE  ####### 
-        # Hintsmy non-recursive solution contains one row-wise for loop, which contains 
-        # several loops over individual lattice sites. You might need to visit each lattice 
-        # site more than once per row. In my implementation, split the logic of checking
-        # the von neumann neighborhood into a separate method _poll_neighbors, which
-        # returns a boolean indicating whether a neighbor is filled
-        #
-        # My recursive solution calls a second function, _flow_recursive, which takes 
-        # two lattice indices as arguments
         self.grid_filled[0, :] = 2
         for i in range(self.grid_filled.shape[0]):
             out_path = "private_dump/percolation/frame" + str(rs*53+i).zfill(4) + ".png"
@@ -175,22 +89,17 @@ class PercolationSimulation:
 
             plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0)
             plt.close()
-        ###############################################################################
+        
 
     def percolate(self, rs):
         """
         Initialize a random lattice and then run a percolation simulation. Report results
         """
-        ###############################################################################
 
-        ####### YOUR CODE HERE  ####### 
-        # Hint: my solution is 3 lines of code, and it just calls other methods in the
-        # class, which do the heavy lifting
         self._initialize_grid()
         self._flow(rs)
         self.grid_filled = self.grid_filled[1:-1, 1:-1]
         out_path = "private_dump/percolation/frame" + str((rs+1)*52).zfill(4) + ".png"
-        # plt.figure()
         plt.grid(False)
         plt.axis('off')
 
@@ -208,10 +117,7 @@ class PercolationSimulation:
             plt.savefig(out_path, bbox_inches='tight', pad_inches=0.0)
             plt.close('all')
             return False
-        ###############################################################################
 
-# Import William's solution
-# from solutions.percolation import PercolationSimulation
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 def plot_percolation(mat):
