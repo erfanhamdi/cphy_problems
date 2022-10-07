@@ -18,20 +18,6 @@ class AbelianSandpile:
 
         Returns: None
         """
-        ########## YOUR CODE HERE ##########
-        #
-        #
-        # My solution starts by dropping a grain, and then solving for all topple events 
-        #  until the sandpile is stable. Watch your boundary conditions carefully.
-        #
-        # I'd recommend using a while loop for the toppling events
-        # We will use absorbing boundary conditions: excess sand grains fall off the edges
-        # of the grid.
-        # In addition to updating self.grid, keep track of the topple durations in the 
-        # instance variable self.all_durations
-        #
-        #
-        ########## YOUR CODE HERE ##########
         new_grain_loc = np.random.choice(self.n, size=2)
         self.grid[new_grain_loc[0], new_grain_loc[1]] += 1
         mask_1 = (self.grid == 4)*1
@@ -64,13 +50,7 @@ class AbelianSandpile:
         """
         Simulate the sandpile model for n_step steps.
         """
-        ########## YOUR CODE HERE ##########
-        #
-        #
-        # YOUR CODE HERE. You should use the step method you wrote above.
-        #
-        #
-        ########## YOUR CODE HERE ##########
+
         for i in range(n_step):
             self.step()
             if self.check_difference(self.grid, self.history[-1]) > 0:
