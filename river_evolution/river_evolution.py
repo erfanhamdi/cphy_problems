@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn import neighbors
+import matplotlib.pyplot as plt
 class River_Evolution:
 
     def __init__(self, n=100, m=50, random_state=0):
@@ -17,8 +17,8 @@ class River_Evolution:
         write new values to the self.grid and self.grid_filled attributes. Make sure
         to set the random seed inside this method.
         """
-        np.random.seed(self.random_state)
-        self.grid = np.zeros((2, self.n, self.m))
+        # np.random.seed(self.random_state)
+        self.grid = np.zeros((2, self.n+1, self.m))
         # Setting a flat surface
         self.grid[0, ...] = 1
 
@@ -29,7 +29,7 @@ class River_Evolution:
         # Randomly select a cell to add water to
         i = np.random.randint(0, self.n)
         j = np.random.randint(0, self.m)
-        i, j = (1, 1)
+        # i, j = (1, 1)
         # Add water to the cell
         self.grid[1, i, j] += 1
 
@@ -45,6 +45,8 @@ class River_Evolution:
         # Randomly select a cell
         i = np.random.randint(0, self.n)
         j = np.random.randint(0, self.m)
+        # Artificial i, j 
+        # i, j = (1, 1)
         # Artificially percipated water
         # self.grid[1, i, j] = 1
         s = self._total_height()
@@ -53,8 +55,12 @@ class River_Evolution:
         # Calculate the height of the neighbors
         neighbors = [(i+1, j), (i, j-1), (i, j+1)]
         # Check if the cell is on the edge
-        if i == self.n-1:
-            self.grid[1, i, j] -= 1
+        # if i == self.n-1 and h > 0:
+        #     self.grid[1, i, j] -= 1
+        if j == 0 :
+            neighbors[1] = (i, -1)
+        if j == self.m-1:
+            neighbors[2] = (i, 0)
         else:
         # Check if the cell is higher than the neighbors and if so, flow water to the neighbors
             for neighbor in neighbors:
@@ -71,16 +77,20 @@ class River_Evolution:
         Run the river evolution simulation for n_steps
         """
         for i in range(n_steps):
-            self._percipate()
-            print(self.grid)
+            t = np.random.rand()
+            if t < 0.3:
+                self._percipate()
+            # print(self.grid)
             self._evolve()
         return self.grid[1]
 
 if __name__ == "__main__":
     # Create a simulation object
-    sim = River_Evolution(3, 3, random_state=0)
+    sim = River_Evolution(200, 500)
     # Run the simulation
-    sim.run(4)
-
+    sim.run(1_000_000)
+    print(sim.grid[:, :-1, :])
+    plt.imshow(sim.grid[1, :-1, :], cmap='gist_yarg')
+    plt.show()
 
 
