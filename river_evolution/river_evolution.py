@@ -21,6 +21,7 @@ class River_Evolution:
         self.grid = np.zeros((2, self.n+1, self.m))
         # Setting a flat surface
         self.grid[0, ...] = 1
+        self.grid_history = self.grid.copy()
 
     def _percipate(self):
         """
@@ -76,21 +77,39 @@ class River_Evolution:
         """
         Run the river evolution simulation for n_steps
         """
+        orig_map=plt.cm.get_cmap('Blues')
+  
+# reversing the original colormap using reversed() function
+        reversed_map = orig_map.reversed()
         for i in range(n_steps):
             t = np.random.rand()
-            if t < 0.3:
+            if t < 0.5:
                 self._percipate()
             # print(self.grid)
+            self.grid_history[1, ...] += self.grid[1, ...]
             self._evolve()
+            self.grid_history[1, ...] += self.grid[1, ...]
+            # plt.imshow(self.grid[1, :-1, :], cmap = 'Blues')
+            # plt.figure()
+            # plt.imshow(self.grid_history[1, ...])
+            # plt.savefig('river_evolution/figs/river_evolution_{:03d}.png'.format(i))
+            # print(i)
+
         return self.grid[1]
 
 if __name__ == "__main__":
     # Create a simulation object
     sim = River_Evolution(200, 500)
     # Run the simulation
-    sim.run(1_000_000)
+    nsteps = 20_000
+    sim.run(nsteps)
     print(sim.grid[:, :-1, :])
+    plt.figure()
     plt.imshow(sim.grid[1, :-1, :], cmap='gist_yarg')
+    plt.title("Last composition")
+    plt.figure()
+    plt.imshow(sim.grid_history[1, :-1 , :]/nsteps, cmap='gist_yarg')
+    plt.title("Time_history")
     plt.show()
 
 
