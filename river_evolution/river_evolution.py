@@ -101,7 +101,7 @@ if __name__ == "__main__":
     # Create a simulation object
     sim = River_Evolution(200, 500)
     # Run the simulation
-    nsteps = 20_000
+    nsteps = 20_0
     sim.run(nsteps)
     print(sim.grid[:, :-1, :])
     plt.figure()
