@@ -2,7 +2,7 @@
 
 |        Initial State   | Final State |  Avalanche activity in most recent timesteps  | Avalanche duration distribution |
 |:----------:|:-------------:|:-------------: |:-------------:|
-|![](/cphy_problems/figs/frame0000.png) |![](/cphy_problems/figs/frame0498.png)| ![](/cphy_problems/figs/Figure_3.png) | ![](/cphy_problems/figs/avalanche_duration_distribution.png) |
+|![](./figs/frame0000.png) |![](/cphy_problems/figs/frame0498.png)| ![](/cphy_problems/figs/Figure_3.png) | ![](/cphy_problems/figs/avalanche_duration_distribution.png) |
 ## Frequency Calculation
 The 1/f can be calculated using slope of avalanche duration distribution. here 
 ```math
