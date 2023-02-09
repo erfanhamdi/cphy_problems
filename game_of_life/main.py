@@ -61,16 +61,18 @@ class Game_of_Life:
         """
         for i in range(n_step):
             self.step()
-            self.history.append(self.grid.copy())
             # plot the grid every 100 steps
             if i % 1 == 0:
                 plt.figure()
                 plt.imshow(self.grid, cmap='gray')
                 plt.title(f"Step {i}")
+                plt.axis('off')
+                plt.tight_layout()
                 # save images to disk
-                plt.savefig(f"figs/step_{i}.png")
+                plt.savefig(f"figs/step_0{i+1}.png")
                 # close the figure
                 plt.close()
+
         return self.grid
 
 if __name__ == "__main__":
@@ -87,3 +89,5 @@ if __name__ == "__main__":
     initial_grid[3, 14] = 1
     model = Game_of_Life(n=9, initial_grid = initial_grid, random_state=0)
     model.simulate(100)
+
+    # ffmpeg -f image2 -i thumb/%001d.jpg -vf scale=480x240 -r 30 out.gif
