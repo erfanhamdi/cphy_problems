@@ -33,6 +33,7 @@ class River_Evolution:
         # i, j = (1, 1)
         # Add water to the cell
         self.grid[1, i, j] += 1
+        self.grid_history[]
 
     def _total_height(self):
         """
@@ -99,9 +100,9 @@ class River_Evolution:
 
 if __name__ == "__main__":
     # Create a simulation object
-    sim = River_Evolution(200, 500)
+    sim = River_Evolution(20, 50)
     # Run the simulation
-    nsteps = 20_0
+    nsteps = 2_000
     sim.run(nsteps)
     print(sim.grid[:, :-1, :])
     plt.figure()
