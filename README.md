@@ -1,3 +1,3 @@
 - [Abelian Sandpile](/abelian_sandpile/README.md)
 - [Percolation](/percolation/README.md)
- 
+- [Game of Life](/game_of_life/README.md) 

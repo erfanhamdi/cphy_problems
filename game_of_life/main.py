@@ -63,9 +63,9 @@ class Game_of_Life:
             self.step()
             # plot the grid every 100 steps
             if i % 1 == 0:
-                plt.figure()
+                plt.figure(figsize=(10, 10))
                 plt.imshow(self.grid, cmap='gray')
-                plt.title(f"Step {i}")
+                # plt.title(f"Step {i}")
                 plt.axis('off')
                 plt.tight_layout()
                 # save images to disk
